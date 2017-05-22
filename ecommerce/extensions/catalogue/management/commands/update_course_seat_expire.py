@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 
 import logging
 import time
-from optparse import make_option
 
 from dateutil import parser
 from django.core.management import BaseCommand, CommandError
@@ -19,14 +18,6 @@ class Command(BaseCommand):
     """Update seat expire dates."""
 
     help = 'Update seat expire with the course enrollment end date.'
-    option_list = BaseCommand.option_list + (
-        make_option('--commit',
-                    action='store_true',
-                    dest='commit',
-                    default=False,
-                    help='Save the data to the database. If this is not set, '
-                         'expires date will not be updated'),
-    )
 
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
@@ -34,6 +25,14 @@ class Command(BaseCommand):
     enrollment_date_not_found = set()
     pause_time = 5
     max_tries = 5
+
+    def add_arguments(self, par):
+        par.add_argument('--commit',
+                         action='store_true',
+                         dest='commit',
+                         default=False,
+                         help='Save the data to the database. If this is not set, '
+                              'expires date will not be updated')
 
     def handle(self, *args, **options):
         seats_to_update = ['honor', 'audit', 'no-id-professional', 'professional']
