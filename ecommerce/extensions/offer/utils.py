@@ -56,8 +56,14 @@ def format_benefit_value(benefit):
     Returns:
         benefit_value (str): String value containing formatted benefit value and type.
     """
+
+    # Circular dependency
+    from ecommerce.programs.constants import BENEFIT_PROXY_CLASS_MAP
+
     benefit_value = _remove_exponent_and_trailing_zeros(Decimal(str(benefit.value)))
-    if benefit.type == Benefit.PERCENTAGE:
+    benefit_type = benefit.type or BENEFIT_PROXY_CLASS_MAP[benefit.proxy_class]
+
+    if benefit_type == Benefit.PERCENTAGE:
         benefit_value = _('{benefit_value}%'.format(benefit_value=benefit_value))
     else:
         converted_benefit = add_currency(Decimal(benefit.value))
