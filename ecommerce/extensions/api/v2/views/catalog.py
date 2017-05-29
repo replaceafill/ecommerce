@@ -22,9 +22,11 @@ logger = logging.getLogger(__name__)
 
 
 class CatalogViewSet(NestedViewSetMixin, ReadOnlyModelViewSet):
-    queryset = Catalog.objects.all()
     serializer_class = serializers.CatalogSerializer
     permission_classes = (IsAuthenticated, IsAdminUser,)
+
+    def get_queryset(self, request, *args, **kwrags):
+        return Catalog.objects.filter(partner=request.site.siteconfiguration.partner)
 
     @list_route()
     def preview(self, request):
