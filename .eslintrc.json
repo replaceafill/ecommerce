@@ -1,0 +1,8 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true
+    },
+    "extends": "eslint-config-edx-es5",
+    "rules": {}
+}

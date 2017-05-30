@@ -1,4 +1,4 @@
-/* jshint asi:true, expr:true */
+/* eslint semi: 0 */
 ({
     mainConfigFile: 'ecommerce/static/js/config.js',
     baseUrl: 'ecommerce/static',

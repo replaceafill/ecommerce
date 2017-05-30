@@ -29,7 +29,7 @@ define([
         });
         _.extend(Backbone.Model.prototype, Backbone.Validation.mixin);
 
-        /* jshint esnext: true */
+        /* eslint-env es6: true */
         var CATALOG_TYPES = {
             single_course: 'Single course',
             multiple_courses: 'Multiple courses',

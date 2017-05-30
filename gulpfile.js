@@ -2,7 +2,7 @@
 
 var gulp = require('gulp'),
     jscs = require('gulp-jscs'),
-    jshint = require('gulp-jshint'),
+    eslint = require('gulp-eslint'),
     KarmaServer = require('karma').Server,
     path = require('path'),
     paths = {
@@ -30,15 +30,15 @@ gulp.task('test', function (cb) {
 });
 
 /**
- * Runs the JSHint linter.
+ * Runs the ESLint linter.
  *
- * http://jshint.com/about/
+ * http://eslint.org/docs/about/
  */
 gulp.task('lint', function () {
     return gulp.src(paths.lint)
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
-        .pipe(jshint.reporter('fail'));
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
 });
 
 /**
