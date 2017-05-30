@@ -104,7 +104,7 @@ router.register(r'partners', partner_views.PartnerViewSet) \
 router.register(r'partners', partner_views.PartnerViewSet) \
     .register(r'products', product_views.ProductViewSet,
               base_name='partner-product', parents_query_lookups=['stockrecords__partner_id'])
-router.register(r'products', product_views.ProductViewSet)
+router.register(r'products', product_views.ProductViewSet, base_name='product')
 router.register(r'vouchers', voucher_views.VoucherViewSet, base_name='vouchers')
 router.register(r'stockrecords', stockrecords_views.StockRecordViewSet, base_name='stockrecords')
 

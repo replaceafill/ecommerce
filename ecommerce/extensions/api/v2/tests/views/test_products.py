@@ -133,7 +133,7 @@ class ProductViewSetTests(ProductViewSetBase):
 class ProductViewSetCouponTests(CouponMixin, ProductViewSetBase):
     def test_coupon_product_details(self):
         """Verify the endpoint returns all coupon information."""
-        coupon = self.create_coupon()
+        coupon = self.create_coupon(partner=self.partner)
         url = reverse('api:v2:product-detail', kwargs={'pk': coupon.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -146,7 +146,7 @@ class ProductViewSetCouponTests(CouponMixin, ProductViewSetBase):
 
     def test_coupon_voucher_serializer(self):
         """Verify that the vouchers of a coupon are properly serialized."""
-        coupon = self.create_coupon()
+        coupon = self.create_coupon(partner=self.partner)
         url = reverse('api:v2:product-detail', kwargs={'pk': coupon.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -160,7 +160,7 @@ class ProductViewSetCouponTests(CouponMixin, ProductViewSetBase):
 
     def test_product_filtering(self):
         """Verify products are filtered."""
-        self.create_coupon()
+        self.create_coupon(partner=self.partner)
         url = reverse('api:v2:product-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)

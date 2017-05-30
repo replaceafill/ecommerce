@@ -12,8 +12,12 @@ Product = get_model('catalogue', 'Product')
 
 
 class ProductViewSet(NestedViewSetMixin, NonDestroyableModelViewSet):
-    queryset = Product.objects.all()
     serializer_class = serializers.ProductSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = ProductFilter
     permission_classes = (IsAuthenticated, IsAdminUser,)
+
+    def get_queryset(self):
+        return Product.objects.filter(
+            stockrecords__partner=self.request.site.siteconfiguration.partner
+        )
