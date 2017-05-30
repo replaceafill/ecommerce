@@ -25,8 +25,8 @@ class CatalogViewSet(NestedViewSetMixin, ReadOnlyModelViewSet):
     serializer_class = serializers.CatalogSerializer
     permission_classes = (IsAuthenticated, IsAdminUser,)
 
-    def get_queryset(self, request, *args, **kwrags):
-        return Catalog.objects.filter(partner=request.site.siteconfiguration.partner)
+    def get_queryset(self):
+        return Catalog.objects.filter(partner=self.request.site.siteconfiguration.partner)
 
     @list_route()
     def preview(self, request):

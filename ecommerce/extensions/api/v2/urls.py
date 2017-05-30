@@ -90,7 +90,7 @@ urlpatterns = [
 ]
 
 router = ExtendedSimpleRouter()
-router.register(r'catalogs', catalog_views.CatalogViewSet) \
+router.register(r'catalogs', catalog_views.CatalogViewSet, base_name='catalog') \
     .register(r'products', product_views.ProductViewSet, base_name='catalog-product',
               parents_query_lookups=['stockrecords__catalogs'])
 router.register(r'coupons', coupon_views.CouponViewSet, base_name='coupons')
