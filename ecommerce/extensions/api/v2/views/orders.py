@@ -21,11 +21,13 @@ Order = get_model('order', 'Order')
 class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'number'
     permission_classes = (IsAuthenticated, IsStaffOrOwner, DjangoModelPermissions,)
-    queryset = Order.objects.all()
     serializer_class = serializers.OrderSerializer
     throttle_classes = (ServiceUserThrottle,)
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = OrderFilter
+
+    def get_queryset(self):
+        Order.objects.filter(site=self.request.site)
 
     def filter_queryset(self, queryset):
         queryset = super(OrderViewSet, self).filter_queryset(queryset)
