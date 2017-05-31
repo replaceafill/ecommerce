@@ -26,7 +26,6 @@ User = get_user_model()
 
 
 class CourseViewSetTests(ProductSerializerMixin, CourseCatalogTestMixin, TestCase):
-    maxDiff = None
     list_path = reverse('api:v2:course-list')
 
     def setUp(self):

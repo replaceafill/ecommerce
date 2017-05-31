@@ -18,6 +18,8 @@ class ProductViewSet(NestedViewSetMixin, NonDestroyableModelViewSet):
     permission_classes = (IsAuthenticated, IsAdminUser,)
 
     def get_queryset(self):
-        return Product.objects.filter(
+        qs = Product.objects.filter(
             stockrecords__partner=self.request.site.siteconfiguration.partner
         )
+        print qs
+        return qs

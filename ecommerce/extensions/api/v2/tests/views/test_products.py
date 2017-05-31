@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 import datetime
 import json
 
-import pytz
 from django.core.urlresolvers import reverse
 from django.test import RequestFactory
+from django.utils.timezone import now
 from oscar.core.loading import get_model
 
 from ecommerce.core.constants import COUPON_PRODUCT_CLASS_NAME
@@ -30,9 +30,9 @@ class ProductViewSetBase(ProductSerializerMixin, CourseCatalogTestMixin, TestCas
         self.client.login(username=self.user.username, password=self.password)
         self.course = CourseFactory(id='edX/DemoX/Demo_Course', name='Test Course', site=self.site)
 
-        # TODO Update the expiration date by 2099-12-31
-        expires = datetime.datetime(2100, 1, 1, tzinfo=pytz.UTC)
-        self.seat = self.course.create_or_update_seat('honor', False, 0, self.partner, expires=expires)
+        expires = now() + datetime.timedelta(days=10)
+        partner = self.site.siteconfiguration.partner
+        self.seat = self.course.create_or_update_seat('honor', False, 0, partner, expires=expires)
 
 
 class ProductViewSetTests(ProductViewSetBase):

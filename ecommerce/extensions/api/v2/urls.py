@@ -94,10 +94,10 @@ router.register(r'catalogs', catalog_views.CatalogViewSet, base_name='catalog') 
     .register(r'products', product_views.ProductViewSet, base_name='catalog-product',
               parents_query_lookups=['stockrecords__catalogs'])
 router.register(r'coupons', coupon_views.CouponViewSet, base_name='coupons')
-router.register(r'courses', course_views.CourseViewSet) \
+router.register(r'courses', course_views.CourseViewSet, base_name='course') \
     .register(r'products', product_views.ProductViewSet,
               base_name='course-product', parents_query_lookups=['course_id'])
-router.register(r'orders', order_views.OrderViewSet)
+router.register(r'orders', order_views.OrderViewSet, base_name='order')
 router.register(r'partners', partner_views.PartnerViewSet) \
     .register(r'catalogs', catalog_views.CatalogViewSet,
               base_name='partner-catalogs', parents_query_lookups=['partner_id'])

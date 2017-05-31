@@ -4,7 +4,6 @@ import ddt
 import httpretty
 import mock
 from django.core.urlresolvers import reverse
-from django.test import RequestFactory
 from oscar.core.loading import get_model
 from requests.exceptions import ConnectionError, Timeout
 from slumber.exceptions import SlumberBaseException
@@ -31,12 +30,6 @@ class CatalogViewSetTest(CatalogMixin, CourseCatalogMockMixin, CourseCatalogServ
     def setUp(self):
         super(CatalogViewSetTest, self).setUp()
         self.client.login(username=self.user.username, password=self.password)
-
-    def prepare_request(self, url):
-        factory = RequestFactory()
-        request = factory.get(url)
-        request.site = self.site
-        return request
 
     def test_staff_authorization_required(self):
         """Verify that only users with staff permissions can access the API. """

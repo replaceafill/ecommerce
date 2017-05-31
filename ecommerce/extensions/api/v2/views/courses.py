@@ -30,7 +30,7 @@ class CourseViewSet(NonDestroyableModelViewSet):
     permission_classes = (IsAuthenticated, IsAdminUser,)
 
     def get_queryset(self):
-        queryset = Course.objects.filter(site=self.request.site).prefetch_related(
+        return Course.objects.filter(site=self.request.site).prefetch_related(
             self.products_prefetch, self.product_attribute_value_prefetch, 'products__stockrecords'
         ).all()
 
