@@ -4,5 +4,11 @@
         "commonjs": true
     },
     "extends": "eslint-config-edx-es5",
-    "rules": {}
+    "rules": {
+        "no-underscore-dangle": ["error", { "allow": ["_super"] }],
+        "no-new": 0
+    },
+    "globals": {
+        "gettext": true
+    }
 }

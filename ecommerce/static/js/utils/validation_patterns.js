@@ -1,9 +1,13 @@
+/* global gettext */
 define([
-        'backbone',
-        'backbone.validation'
-    ],
-    function (
-        Backbone) {
+    'backbone',
+    'backbone.validation',
+    'underscore'
+],
+    function(
+        Backbone,
+        BackboneValidation,
+        _) {
         'use strict';
 
         // Add custom validation patterns to Backbone.Validation

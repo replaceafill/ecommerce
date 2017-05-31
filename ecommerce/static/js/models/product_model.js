@@ -1,12 +1,12 @@
 define([
-        'backbone',
-        'backbone.relational',
-        'backbone.validation',
-        'moment',
-        'underscore',
-        'utils/utils'
-    ],
-    function (Backbone,
+    'backbone',
+    'backbone.relational',
+    'backbone.validation',
+    'moment',
+    'underscore',
+    'utils/utils'
+],
+    function(Backbone,
               BackboneRelational,
               BackboneValidation,
               moment,
@@ -26,9 +26,9 @@ define([
                 'credit_hours'
             ],
 
-            parse: function (response) {
+            parse: function(response) {
                 // Un-nest the attributes
-                _.each(response.attribute_values, function (data) {
+                _.each(response.attribute_values, function(data) {
                     this.nestedAttributes.push(data.name);
                     response[data.name] = data.value;
                 }, this);
@@ -43,12 +43,12 @@ define([
                 return response;
             },
 
-            toJSON: function () {
+            toJSON: function() {
                 var data = _.clone(this.attributes);
                 data.attribute_values = [];
 
                 // Re-nest the attributes
-                _.each(_.uniq(this.nestedAttributes), function (attribute) {
+                _.each(_.uniq(this.nestedAttributes), function(attribute) {
                     if (this.has(attribute)) {
                         data.attribute_values.push({
                             name: attribute,

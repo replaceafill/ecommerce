@@ -1,12 +1,13 @@
+/* global gettext */
 define([
-        'backbone',
-        'backbone.validation',
-        'jquery',
-        'moment',
-        'pikaday',
-        'punycode',
-        'underscore'],
-    function (Backbone,
+    'backbone',
+    'backbone.validation',
+    'jquery',
+    'moment',
+    'pikaday',
+    'punycode',
+    'underscore'],
+    function(Backbone,
               BackboneValidation,
               $,
               moment,
@@ -25,21 +26,21 @@ define([
              * @param blackList Exclude attributes in this array of strings.
              * @returns Hash of found attributes.
              */
-            getNodeProperties: function (nodeAttributes, startsWithAndStrip, blackList) {
-                var properties = {};
-
+            getNodeProperties: function(nodeAttributes, startsWithAndStrip, blackList) {
                 // fill in defaults
-                startsWithAndStrip = startsWithAndStrip || '';
-                blackList = blackList || [];
+                var blackListReassigned = blackList || [],
+                    properties = {},
+                    startsWithAndStripReassigned = startsWithAndStrip || '';
 
-                _(_(nodeAttributes.length).range()).each(function (i) {
+                _(_(nodeAttributes.length).range()).each(function(i) {
                     var nodeName = nodeAttributes.item(i).nodeName,
                         strippedName;
                     // filter the attributes to just the ones that start with our
                     // selection and aren't in our blacklist
-                    if (nodeName.indexOf(startsWithAndStrip) === 0 && !_(blackList).contains(nodeName)) {
+                    if (nodeName.indexOf(startsWithAndStripReassigned) === 0
+                        && !_(blackListReassigned).contains(nodeName)) {
                         // remove the
-                        strippedName = nodeName.replace(startsWithAndStrip, '');
+                        strippedName = nodeName.replace(startsWithAndStripReassigned, '');
                         properties[strippedName] =
                             nodeAttributes.item(i).value;
                     }
@@ -56,11 +57,10 @@ define([
              * @param {String} datetime - String representing a UTC datetime
              * @returns {String}
              */
-            stripTimezone: function (datetime) {
+            stripTimezone: function(datetime) {
                 if (datetime) {
-                    datetime = moment.utc(new Date(datetime)).format('YYYY-MM-DDTHH:mm:ss');
+                    return moment.utc(new Date(datetime)).format('YYYY-MM-DDTHH:mm:ss');
                 }
-
                 return datetime;
             },
 
@@ -72,9 +72,9 @@ define([
              * @param {String} datetime - String representing a datetime WITHOUT a timezone component
              * @returns {String}
              */
-            restoreTimezone: function (datetime) {
+            restoreTimezone: function(datetime) {
                 if (datetime) {
-                    datetime = moment.utc(datetime + 'Z').format();
+                    return moment.utc(datetime + 'Z').format();
                 }
                 return datetime;
             },
@@ -87,8 +87,8 @@ define([
              * @param {Backbone.Model[]} models
              * @returns {Boolean} indicates if ALL models are valid.
              */
-            areModelsValid: function (models) {
-                return _.every(models, function (model) {
+            areModelsValid: function(models) {
+                return _.every(models, function(model) {
                     return model.isValid(true);
                 });
             },
@@ -98,10 +98,10 @@ define([
              *
              * @param {Backbone.View} view
              */
-            bindValidation: function (view) {
+            bindValidation: function(view) {
                 /* istanbul ignore next */
                 Backbone.Validation.bind(view, {
-                    valid: function (view, attr) {
+                    valid: function(attr) {
                         var $el = view.$el.find('[name=' + attr + ']'),
                             $group = $el.closest('.form-group'),
                             $helpBlock = $group.find('.help-block:first'),
@@ -113,7 +113,7 @@ define([
                         $group.removeClass('has-error');
                         $helpBlock.addClass('hidden');
                     },
-                    invalid: function (view, attr, error) {
+                    invalid: function(attr, error) {
                         var $el = view.$el.find('[name=' + attr + ']'),
                             $group = $el.closest('.form-group'),
                             $helpBlock = $group.find('.help-block:first'),
@@ -154,6 +154,7 @@ define([
             addDatePicker: function(context) {
                 _.each(context.$el.find('.add-pikaday'), function(el) {
                     if (el.getAttribute('datepicker-initialized') !== 'true') {
+                        // eslint-disable-next-line no-new
                         new Pikaday({
                             field: el,
                             format: 'YYYY-MM-DDTHH:mm:ss',
@@ -179,12 +180,13 @@ define([
                     domainParts,
                     invalidDomain;
 
-                if (_.isEmpty(domainArray[domainArray.length-1])) {
+                if (_.isEmpty(domainArray[domainArray.length - 1])) {
                     return gettext('Trailing comma not allowed.');
                 }
 
                 // Go through domains in the array and if invalid domain detected exit loop and remember domain
-                invalidDomain = _.find(domainArray, function (el) {
+                invalidDomain = _.find(domainArray, function(el) {
+                    var i = 0;
                     domainParts = el.split('.');
 
                     /*
@@ -199,12 +201,12 @@ define([
                     if (/--/.test(el) ||
                         /\.\./.test(el) ||
                         domainParts.length < 2 ||
-                        domainParts[domainParts.length-1].length < 2 ||
-                        /[-0-9]/.test(domainParts[domainParts.length-1])) {
+                        domainParts[domainParts.length - 1].length < 2 ||
+                        /[-0-9]/.test(domainParts[domainParts.length - 1])) {
                         return true;
                     }
 
-                    for (var i=0; i<domainParts.length; i++) {
+                    for (i; i < domainParts.length; i += 1) {
                         // - non of the domain levels can start or end with a hyphen before encoding
                         if (/^-/.test(domainParts[i]) || /-$/.test(domainParts[i])) {
                             return true;
@@ -217,6 +219,7 @@ define([
                             return true;
                         }
                     }
+                    return undefined;
                 });
 
                 return invalidDomain;
@@ -235,7 +238,7 @@ define([
              * The menu items should show/hide on click.
              */
             toogleMobileMenuClickEvent: function() {
-                $('#hamburger-button').on('click', function () {
+                $('#hamburger-button').on('click', function() {
                     $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'false' ? 'true' : 'false');
                     $('#main-navbar-collapse').toggle();
                 });

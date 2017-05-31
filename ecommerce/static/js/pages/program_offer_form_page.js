@@ -1,12 +1,13 @@
 require([
-        'jquery',
-        'pikaday'
-    ],
-    function ($, Pikaday) {
+    'jquery',
+    'pikaday'
+],
+    function($, Pikaday) {
         'use strict';
 
-        $(function () {
-            $('#programOfferForm').find('.add-pikaday').each(function () {
+        $(function() {
+            $('#programOfferForm').find('.add-pikaday').each(function() {
+                // eslint-disable-next-line no-new
                 new Pikaday({
                     field: this,
                     format: 'YYYY-MM-DD HH:mm:ss',

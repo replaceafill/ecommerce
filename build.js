@@ -1,5 +1,5 @@
 /* eslint semi: 0 */
-({
+({ // eslint-disable-line no-unused-expressions
     mainConfigFile: 'ecommerce/static/js/config.js',
     baseUrl: 'ecommerce/static',
     dir: 'ecommerce/static/build',
